@@ -26,15 +26,17 @@ const UserService = {
     return newUser;
   },
 
-  async patchUser(name, email, password) {
-    const user = await this.getUserByEmail(email);
+  async putUser(name, email) {
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
       throw new Error('This user do not exist.');
     }
-    const updatedUser = await User.update({ name, email, password }, { where: { email } });
+    const { password } = user;
+    const newUser = { name, email, password };
+    await User.update(newUser, { where: { email } });
 
-    return updatedUser;
+    return newUser;
   },
 
   async deleteUser(email) {
