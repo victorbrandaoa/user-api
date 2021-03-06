@@ -1,29 +1,39 @@
 import UserService from '../services/userService';
 
 const UserController = {
-  getAllUsers(req, res) {
-    return UserService.getAllUsers().then((users) => res.status(200).json(users));
+  async getAllUsers(req, res) {
+    const users = await UserService.getAllUsers();
+
+    return res.status(200).json(users);
   },
-  getUserByEmail(req, res) {
+
+  async getUserByEmail(req, res) {
     const { email } = req.params;
-    return UserService.getUserByEmail(email).then((user) => res.status(200).json(user));
+    const user = await UserService.getUserByEmail(email);
+
+    return res.status(200).json(user);
   },
-  postUser(req, res) {
+
+  async postUser(req, res) {
     const { name, email, password } = req.body;
-    return UserService.postUser(name, email, password).then(
-      (user) => res.status(201).json(user),
-    );
+    const user = await UserService.postUser(name, email, password);
+
+    return res.status(201).json(user);
   },
-  patchUser(req, res) {
+
+  async patchUser(req, res) {
     const { email } = req.params;
     const { name, password } = req.body;
-    return UserService.patchUser(name, email, password).then(
-      (user) => res.status(200).json(user),
-    );
+    const user = UserService.patchUser(name, email, password);
+
+    return res.status(200).json(user);
   },
-  deleteUser(req, res) {
+
+  async deleteUser(req, res) {
     const { email } = req.params;
-    return UserService.deleteUser(email).then((user) => res.status(200).json(user));
+    const user = UserService.deleteUser(email);
+
+    return res.status(200).json(user);
   },
 };
 
