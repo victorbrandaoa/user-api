@@ -6,10 +6,14 @@ const UserController = {
     return res.status(200).json(users);
   },
 
-  async getUserByEmail(req, res) {
-    const { email } = req.params;
-    const user = await UserService.getUserByEmail(email);
-    return res.status(200).json(user || {});
+  async getUser(req, res) {
+    try {
+      const { email } = req.params;
+      const user = await UserService.getUser(email);
+      return res.status(200).json(user);
+    } catch (error) {
+      return res.status(404).json({ erro: error.message });
+    }
   },
 
   async postUser(req, res) {

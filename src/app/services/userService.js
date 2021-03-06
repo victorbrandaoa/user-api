@@ -6,11 +6,12 @@ const UserService = {
     return users;
   },
 
-  async getUserByEmail(email) {
-    const user = await User.findOne({
-      attributes: ['name', 'email'],
-      where: { email },
-    });
+  async getUser(email) {
+    const user = await this.getUserByEmail(email);
+
+    if (!user) {
+      throw new Error('This user do not exists.');
+    }
 
     return user;
   },
@@ -30,7 +31,7 @@ const UserService = {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      throw new Error('This user do not exist.');
+      throw new Error('This user do not exists.');
     }
     const { password } = user;
     const newUser = { name, email, password };
@@ -43,9 +44,18 @@ const UserService = {
     const user = await this.getUserByEmail(email);
 
     if (!user) {
-      throw new Error('This user do not exist.');
+      throw new Error('This user do not exists.');
     }
     await User.destroy({ where: { email } });
+
+    return user;
+  },
+
+  async getUserByEmail(email) {
+    const user = await User.findOne({
+      attributes: ['name', 'email'],
+      where: { email },
+    });
 
     return user;
   },
