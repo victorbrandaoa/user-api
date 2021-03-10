@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('', UserController.getAllUsers);
 router.get('/:email', UserController.getUser);
 router.post('', UserController.postUser);
-router.patch('/:email', UserController.putUser);
+router.put('/:email', UserController.putUser);
 router.delete('/:email', UserController.deleteUser);
 
 export default router;

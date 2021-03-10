@@ -18,9 +18,8 @@ const UserController = {
 
   async postUser(req, res) {
     try {
-      const { name, email, password } = req.body;
-      const user = await UserService.postUser(name, email, password);
-      return res.status(201).json(user);
+      const { fname, lname, email } = await UserService.postUser(req.body);
+      return res.status(201).json({ fname, lname, email });
     } catch (error) {
       return res.status(404).json({ erro: error.message });
     }
@@ -28,10 +27,9 @@ const UserController = {
 
   async putUser(req, res) {
     try {
-      const { email } = req.params;
-      const { name } = req.body;
-      const user = await UserService.putUser(name, email);
-      return res.status(200).json(user);
+      const { email: queryEmail } = req.params;
+      const { fname, lname, email } = await UserService.putUser(queryEmail, req.body);
+      return res.status(200).json({ fname, lname, email });
     } catch (error) {
       return res.status(404).json({ erro: error.message });
     }

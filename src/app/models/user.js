@@ -3,7 +3,11 @@ import DataTypes from 'sequelize';
 import sequelize from '../../database';
 
 const User = sequelize.define('User', {
-  name: {
+  fname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lname: {
     type: DataTypes.STRING,
     allowNull: false,
   },

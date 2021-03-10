@@ -2,7 +2,7 @@ import User from '../models/user';
 
 const UserService = {
   async getAllUsers() {
-    const users = await User.findAll({ attributes: ['name', 'email'] });
+    const users = await User.findAll({ attributes: ['fname', 'lname', 'email'] });
     return users;
   },
 
@@ -16,26 +16,28 @@ const UserService = {
     return user;
   },
 
-  async postUser(name, email, password) {
+  async postUser({ fname, lname, email, password }) {
     const user = await this.getUserByEmail(email);
 
     if (user) {
       throw new Error('This user already exists.');
     }
-    const newUser = await User.create({ name, email, password });
+    const newUser = await User.create({ fname, lname, email, password });
 
     return newUser;
   },
 
-  async putUser(name, email) {
-    const user = await User.findOne({ where: { email } });
+  async putUser(queryEmail, { fname, lname, email }) {
+    const currentUser = await this.getUserByEmail(
+      queryEmail, ['fname', 'lname', 'email', 'password'],
+    );
 
-    if (!user) {
-      throw new Error('This user do not exists.');
+    if (!currentUser) {
+      throw new Error('This user do not exist.');
     }
-    const { password } = user;
-    const newUser = { name, email, password };
-    await User.update(newUser, { where: { email } });
+    const { password } = currentUser;
+    const newUser = { fname, lname, email, password };
+    await User.update(newUser, { where: { email: queryEmail } });
 
     return newUser;
   },
@@ -44,16 +46,16 @@ const UserService = {
     const user = await this.getUserByEmail(email);
 
     if (!user) {
-      throw new Error('This user do not exists.');
+      throw new Error('This user do not exist.');
     }
     await User.destroy({ where: { email } });
 
     return user;
   },
 
-  async getUserByEmail(email) {
+  async getUserByEmail(email, attributes = ['fname', 'lname', 'email']) {
     const user = await User.findOne({
-      attributes: ['name', 'email'],
+      attributes,
       where: { email },
     });
 
