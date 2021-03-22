@@ -18,8 +18,8 @@ const UserController = {
 
   async postUser(req, res) {
     try {
-      const { fname, lname, email } = await UserService.postUser(req.body);
-      return res.status(201).json({ fname, lname, email });
+      const { fname, lname, email, token } = await UserService.postUser(req.body);
+      return res.status(201).json({ fname, lname, email, token });
     } catch (error) {
       return res.status(404).json({ erro: error.message });
     }

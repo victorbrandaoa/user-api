@@ -1,3 +1,4 @@
+import Authentication from '../middlewares/auth';
 import User from '../models/user';
 
 const UserService = {
@@ -23,6 +24,7 @@ const UserService = {
       throw new Error('This user already exists.');
     }
     const newUser = await User.create({ fname, lname, email, password });
+    newUser.token = Authentication.generateToken(newUser);
 
     return newUser;
   },
