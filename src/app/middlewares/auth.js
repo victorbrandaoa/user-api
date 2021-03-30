@@ -3,7 +3,7 @@ import authConfig from '../../config/authConfig';
 
 const Authentication = {
   generateToken(userData) {
-    return jwt.sign(userData.toJSON(), authConfig.secret);
+    return jwt.sign(userData, authConfig.secret, { expiresIn: authConfig.expiresIn });
   },
 
   verifyToken(req, res, next) {

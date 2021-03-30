@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import Authentication from '../middlewares/auth';
 import User from '../models/user';
 
@@ -23,8 +24,9 @@ const UserService = {
     if (user) {
       throw new Error('This user already exists.');
     }
-    const newUser = await User.create({ fname, lname, email, password });
-    newUser.token = Authentication.generateToken(newUser);
+    const hashPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({ fname, lname, email, password: hashPassword });
+    newUser.token = Authentication.generateToken({ email, password });
 
     return newUser;
   },
