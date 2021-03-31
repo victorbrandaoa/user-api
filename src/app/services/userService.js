@@ -1,4 +1,7 @@
+import bcrypt from 'bcrypt';
+import Authentication from '../middlewares/auth';
 import User from '../models/user';
+import { ConflictError, NotFoundError } from '../util/errors';
 
 const UserService = {
   async getAllUsers() {
@@ -10,7 +13,7 @@ const UserService = {
     const user = await this.getUserByEmail(email);
 
     if (!user) {
-      throw new Error('This user do not exists.');
+      throw new NotFoundError('This user does not exist.');
     }
 
     return user;
@@ -20,9 +23,11 @@ const UserService = {
     const user = await this.getUserByEmail(email);
 
     if (user) {
-      throw new Error('This user already exists.');
+      throw new ConflictError('This user already exists.');
     }
-    const newUser = await User.create({ fname, lname, email, password });
+    const hashPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({ fname, lname, email, password: hashPassword });
+    newUser.token = Authentication.generateToken({ email, password });
 
     return newUser;
   },
@@ -33,7 +38,7 @@ const UserService = {
     );
 
     if (!currentUser) {
-      throw new Error('This user do not exist.');
+      throw new NotFoundError('This user does not exist.');
     }
     const { password } = currentUser;
     const newUser = { fname, lname, email, password };
@@ -46,7 +51,7 @@ const UserService = {
     const user = await this.getUserByEmail(email);
 
     if (!user) {
-      throw new Error('This user do not exist.');
+      throw new NotFoundError('This user does not exist.');
     }
     await User.destroy({ where: { email } });
 

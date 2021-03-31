@@ -12,16 +12,16 @@ const UserController = {
       const user = await UserService.getUser(email);
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(404).json({ erro: error.message });
+      return res.status(error.status).json({ erro: error.message });
     }
   },
 
   async postUser(req, res) {
     try {
-      const { fname, lname, email } = await UserService.postUser(req.body);
-      return res.status(201).json({ fname, lname, email });
+      const { fname, lname, email, token } = await UserService.postUser(req.body);
+      return res.status(201).json({ fname, lname, email, token });
     } catch (error) {
-      return res.status(404).json({ erro: error.message });
+      return res.status(error.status).json({ erro: error.message });
     }
   },
 
@@ -31,7 +31,7 @@ const UserController = {
       const { fname, lname, email } = await UserService.putUser(queryEmail, req.body);
       return res.status(200).json({ fname, lname, email });
     } catch (error) {
-      return res.status(404).json({ erro: error.message });
+      return res.status(error.status).json({ erro: error.message });
     }
   },
 
@@ -41,7 +41,7 @@ const UserController = {
       const user = await UserService.deleteUser(email);
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(404).json({ erro: error.message });
+      return res.status(error.status).json({ erro: error.message });
     }
   },
 };
