@@ -1,10 +1,13 @@
 import express from 'express';
 
-import router from './app/routes/status'
+import { statusRouter, userRouter, loginRouter } from './app/routes';
 
 const app = express();
 
-app.use('/status', router);
 app.use(express.json());
 
-app.listen(3333, () => console.log('Running...'));
+app.use('/status', statusRouter);
+app.use('/users', userRouter);
+app.use('/login', loginRouter);
+
+app.listen(3333);

@@ -1,7 +1,10 @@
-import * as service from '../services/status';
+import StatusService from '../services/status';
 
-export const getStatus = (req, res) => {
-    const resposta = service.getStatus();
-
-    return res.json(resposta);
+const StatusController = {
+  getStatus(req, res) {
+    const resposta = StatusService.getStatus();
+    return res.status(200).json(resposta);
+  },
 };
+
+export default StatusController;
