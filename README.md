@@ -1,4 +1,4 @@
-# node-api-project
+# user-api
 
 Para executar essa API será necessária a instalação do SGBD PostgreSQL, siga as instruções abaixo:
 
