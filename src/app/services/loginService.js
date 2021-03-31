@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import Authentication from '../middlewares/auth';
 import UserService from './userService';
+import { NotFoundError, UnauthorizedError } from '../util/errors';
 
 const LoginService = {
   async login(user) {
@@ -9,11 +10,11 @@ const LoginService = {
     const currentUser = await UserService.getUserByEmail(email, ['email', 'password']);
 
     if (!currentUser) {
-      throw new Error('This user do not exist.');
+      throw new NotFoundError('This user does not exist.');
     }
 
     const passVerify = await bcrypt.compare(password, currentUser.password);
-    if (!passVerify) throw new Error('Incorrect password provided.');
+    if (!passVerify) throw new UnauthorizedError('Incorrect password provided.');
 
     const token = Authentication.generateToken(user);
 
