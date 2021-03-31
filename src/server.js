@@ -1,6 +1,9 @@
 import express from 'express';
+import dotenv from 'dotenv';
 
 import { statusRouter, userRouter, loginRouter } from './app/routes';
+
+dotenv.config();
 
 const app = express();
 
@@ -10,4 +13,4 @@ app.use('/status', statusRouter);
 app.use('/users', userRouter);
 app.use('/login', loginRouter);
 
-app.listen(3333);
+app.listen(process.env.API_PORT);
