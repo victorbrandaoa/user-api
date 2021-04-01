@@ -1,4 +1,4 @@
-import StatusService from '../services/status';
+import StatusService from '../services/statusService';
 
 const StatusController = {
   getStatus(req, res) {

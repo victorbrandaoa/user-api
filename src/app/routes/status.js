@@ -1,6 +1,6 @@
 import express from 'express';
 
-import StatusController from '../controllers/status';
+import StatusController from '../controllers/statusController';
 
 const router = express.Router();
 
