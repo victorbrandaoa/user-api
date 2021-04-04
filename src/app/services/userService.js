@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
-import Authentication from '../middlewares/auth';
 import User from '../models/user';
-import { ConflictError, NotFoundError } from '../util/errors';
+import { ConflictError, NotFoundError } from '../errors';
 
 const UserService = {
   async getAllUsers() {
@@ -27,7 +26,6 @@ const UserService = {
     }
     const hashPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ fname, lname, email, password: hashPassword });
-    newUser.token = Authentication.generateToken({ email, password });
 
     return newUser;
   },

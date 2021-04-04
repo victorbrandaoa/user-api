@@ -1,4 +1,5 @@
 import UserService from '../services/userService';
+import Authentication from '../middlewares/auth';
 
 const UserController = {
   async getAllUsers(req, res) {
@@ -18,7 +19,8 @@ const UserController = {
 
   async postUser(req, res) {
     try {
-      const { fname, lname, email, token } = await UserService.postUser(req.body);
+      const { fname, lname, email, password } = await UserService.postUser(req.body);
+      const token = Authentication.generateToken({ email, password });
       return res.status(201).json({ fname, lname, email, token });
     } catch (error) {
       return res.status(error.status).json({ erro: error.message });

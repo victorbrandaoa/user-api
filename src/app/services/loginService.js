@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import Authentication from '../middlewares/auth';
 import UserService from './userService';
-import { NotFoundError, UnauthorizedError } from '../util/errors';
+import { NotFoundError, UnauthorizedError } from '../errors';
 
 const LoginService = {
   async login(user) {
